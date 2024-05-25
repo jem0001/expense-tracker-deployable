@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
@@ -10,7 +11,7 @@ const app = express();
 const dbURI = process.env.DATABASE;
 const port = process.env.PORT || 5000;
 
-app.use(express.static("build"));
+app.use(express.static(path.join(__dirname, "build")));
 app.use(
   cors({
     credentials: true,
@@ -20,8 +21,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(Router);
 
-app.get("/", (req, res) => {
-  res.json("hello");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/build/index.html"));
 });
 
 mongoose
